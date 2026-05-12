@@ -1,0 +1,23 @@
+.hero-title {
+  animation: fadeUp 1s ease forwards;
+}
+
+.hero-description {
+  animation: fadeUp 1.4s ease forwards;
+}
+
+.hero-buttons {
+  animation: fadeUp 1.8s ease forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

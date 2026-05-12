@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Occultus Leadership</title>
+
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+  <div class="background-overlay"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+
+    <div class="nav-left">
+      <div class="logo-container">
+        <h1 class="logo-text">OCCULTUS</h1>
+        <span class="logo-subtitle">Leadership</span>
+      </div>
+    </div>
+
+    <div class="nav-center">
+      <a href="./index.html">Home</a>
+      <a href="./factions.html">Factions</a>
+      <a href="./leadership.html">Leadership</a>
+    </div>
+
+    <div class="nav-user"></div>
+  </nav>
+
+  <!-- PAGE -->
+  <main class="container">
+
+    <h1 class="section-title">Leadership Dashboard</h1>
+
+    <div id="accessDenied" class="quote-box" style="display:none;">
+      Access Restricted — Leadership Clearance Required
+    </div>
+
+    <div id="dashboard" style="display:none;">
+
+      <div class="faction-card">
+        <h3>Active Factions</h3>
+        <ul>
+          <li>Occultus (33097)</li>
+          <li>Occul2us (9728)</li>
+          <li>Occul3us (9171)</li>
+        </ul>
+      </div>
+
+      <div class="faction-card" style="margin-top:30px;">
+        <h3>Command Controls</h3>
+
+        <button class="primary-btn">Member Activity</button>
+        <button class="primary-btn">War Status</button>
+        <button class="primary-btn">Internal Notices</button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- SCRIPTS (NO MODULES) -->
+  <script src="./js/config.js"></script>
+  <script src="./js/auth.js"></script>
+  <script src="./js/nav.js"></script>
+  <script src="./js/access.js"></script>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+
+      const session = JSON.parse(localStorage.getItem("occultusSession"));
+
+      const accessDenied = document.getElementById("accessDenied");
+      const dashboard = document.getElementById("dashboard");
+
+      if (!session || !session.isLeader) {
+        accessDenied.style.display = "block";
+        dashboard.style.display = "none";
+        return;
+      }
+
+      dashboard.style.display = "block";
+      accessDenied.style.display = "none";
+    });
+  </script>
+
+</body>
+</html>
