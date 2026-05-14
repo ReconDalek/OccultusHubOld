@@ -1,24 +1,36 @@
-const loginBtn =
-  document.getElementById("loginBtn");
+window.addEventListener("DOMContentLoaded", () => {
 
-const loginModal =
-  document.getElementById("loginModal");
+  const loginBtn =
+    document.getElementById("loginBtn");
 
-const closeModal =
-  document.getElementById("closeModal");
+  const loginModal =
+    document.getElementById("loginModal");
 
-loginBtn.addEventListener("click", () => {
-  loginModal.classList.remove("hidden");
-});
+  const closeModal =
+    document.getElementById("closeModal");
 
-closeModal.addEventListener("click", () => {
-  loginModal.classList.add("hidden");
-});
+  if (loginBtn && loginModal) {
 
-window.addEventListener("click", (event) => {
+    loginBtn.addEventListener("click", () => {
+      loginModal.classList.remove("hidden");
+    });
 
-  if (event.target === loginModal) {
-    loginModal.classList.add("hidden");
   }
+
+  if (closeModal && loginModal) {
+
+    closeModal.addEventListener("click", () => {
+      loginModal.classList.add("hidden");
+    });
+
+  }
+
+  window.addEventListener("click", (event) => {
+
+    if (event.target === loginModal) {
+      loginModal.classList.add("hidden");
+    }
+
+  });
 
 });

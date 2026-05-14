@@ -1,25 +1,50 @@
-const quoteElement = document.getElementById("rotatingQuote");
+window.addEventListener("DOMContentLoaded", () => {
 
-let quoteIndex = 0;
+  const quoteElement =
+    document.getElementById("rotatingQuote");
 
-function rotateQuotes() {
+  if (!quoteElement) return;
 
-  quoteIndex++;
+  const quotes = OCCULTUS_CONFIG.quotes;
 
-  if (quoteIndex >= OCCULTUS_CONFIG.quotes.length) {
-    quoteIndex = 0;
+  let currentIndex =
+    Math.floor(Math.random() * quotes.length);
+
+  function setQuote(index) {
+
+    quoteElement.style.opacity = "0";
+
+    setTimeout(() => {
+
+      quoteElement.textContent =
+        `“${quotes[index]}”`;
+
+      quoteElement.style.opacity = "1";
+
+    }, 300);
+
   }
 
-  quoteElement.style.opacity = 0;
+  setQuote(currentIndex);
 
-  setTimeout(() => {
+  setInterval(() => {
 
-    quoteElement.textContent =
-      OCCULTUS_CONFIG.quotes[quoteIndex];
+    let nextIndex;
 
-    quoteElement.style.opacity = 1;
+    do {
 
-  }, 300);
-}
+      nextIndex =
+        Math.floor(Math.random() * quotes.length);
 
-setInterval(rotateQuotes, 5000);
+    } while (
+      quotes.length > 1 &&
+      nextIndex === currentIndex
+    );
+
+    currentIndex = nextIndex;
+
+    setQuote(currentIndex);
+
+  }, 10000);
+
+});

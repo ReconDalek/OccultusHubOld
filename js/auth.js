@@ -106,16 +106,6 @@ function applySession(session) {
     welcomeText.textContent = `${session.name} • ${rank}`;
   }
 
-  updateNav(session);
-}
-
-function updateNav(session) {
-  const navCenter = document.querySelector(".nav-center");
-  if (!navCenter) return;
-
-  const allowed = session && session.isFactionMember;
-
-  navCenter.style.display = allowed ? "flex" : "none";
 }
 
 // AUTO INIT

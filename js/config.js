@@ -9,10 +9,35 @@ const OCCULTUS_CONFIG = {
   ],
 
   quotes: [
-    "Only those who embrace the darkness may command it.",
-    "Three factions. One purpose.",
-    "Strength through unity. Loyalty through blood.",
-    "The veil reveals only the worthy.",
-    "Power belongs to the devoted."
-  ]
+  "Only those who embrace the darkness may command it.",
+  "Three factions. One family.",
+  "Strength through unity. Loyalty through blood.",
+  "The veil reveals only the worthy.",
+  "Power belongs to the devoted.",
+  "From shadow we rise. Through war we endure.",
+  "The weak seek safety. The worthy seek power.",
+  "Our silence hides the empire beneath it.",
+  "Loyalty is earned in blood and battle.",
+  "The order watches even when unseen.",
+  "Every war forges another legend.",
+  "The inner sanctum remembers all debts.",
+  "One banner. Three circles. Endless reach.",
+  "Fear all those that move as one.",
+  "The veil does not protect the faithless.",
+  "Power without loyalty is already lost.",
+  "In darkness, unity becomes strength.",
+  "The collective does not forgive betrayal.",
+  "Some build factions. We build dynasties.",
+  "Not all shadows hide weakness.",
+  "The devoted inherit the underworld.",
+  "War reveals who truly belongs.",
+  "The circle remains unbroken.",
+  "Behind every victory stands the collective.",
+  "Occultus thrives where others collapse.",
+  "The faithful never stand alone.",
+  "Unity sharpens every blade.",
+  "Enemies fade. The order remains.",
+  "Strength is temporary. Loyalty is eternal.",
+  "The shadows answer to us."
+]
 };

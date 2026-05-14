@@ -3,30 +3,101 @@ function getSession() {
   return raw ? JSON.parse(raw) : null;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function updateNavigation() {
+
   const session = getSession();
 
-  const navCenter = document.querySelector(".nav-center");
-  const userBox = document.querySelector(".nav-user");
+  const navCenter =
+    document.querySelector(".nav-center");
 
-  if (navCenter) {
-    navCenter.style.display =
-      session && session.isFactionMember ? "flex" : "none";
+  const loginBtn =
+    document.getElementById("loginBtn");
+
+  const welcomeContainer =
+    document.getElementById("welcomeContainer");
+
+  const welcomeText =
+    document.getElementById("welcomeText");
+
+  const leadershipLink =
+    document.getElementById("leadershipLink");
+
+  const factionsLink =
+    document.getElementById("factionsLink");
+
+  if (!navCenter) return;
+
+  // DEFAULT STATE
+  if (factionsLink) {
+    factionsLink.style.display = "inline-block";
   }
 
-  if (userBox) {
-    if (!session) {
-      userBox.innerHTML = `<button id="loginBtn">Login</button>`;
-    } else {
-      userBox.innerHTML = `
-        <span>Welcome, ${session.name}</span>
-        <button id="logoutBtn">Logout</button>
-      `;
+  if (leadershipLink) {
+    leadershipLink.style.display = "none";
+  }
 
-      document.getElementById("logoutBtn").onclick = () => {
-        localStorage.removeItem("occultusSession");
-        location.reload();
-      };
+  if (loginBtn) {
+    loginBtn.classList.remove("hidden");
+  }
+
+  if (welcomeContainer) {
+    welcomeContainer.classList.add("hidden");
+  }
+
+  // NOT LOGGED IN
+  if (!session) {
+    return;
+  }
+
+  // LOGGED IN
+  if (loginBtn) {
+    loginBtn.classList.add("hidden");
+  }
+
+  if (welcomeContainer) {
+    welcomeContainer.classList.remove("hidden");
+  }
+
+  let rank = "Visitor";
+
+  if (session.isLeader) {
+    rank = "Leadership";
+  } else if (session.isFactionMember) {
+    rank = "Member";
+  }
+
+  if (welcomeText) {
+    welcomeText.textContent =
+      `${session.name} • ${rank}`;
+  }
+
+  // FACTION MEMBER NAV
+  if (session.isFactionMember) {
+
+    if (factionsLink) {
+      factionsLink.style.display = "inline-block";
     }
+
+    // LEADERSHIP NAV
+    if (session.isLeader && leadershipLink) {
+      leadershipLink.style.display = "inline-block";
+    }
+
   }
-});
+
+  const logoutBtn =
+    document.getElementById("logoutBtn");
+
+  if (logoutBtn) {
+    logoutBtn.onclick = () => {
+      localStorage.removeItem("occultusSession");
+      location.reload();
+    };
+  }
+
+}
+
+window.addEventListener(
+  "DOMContentLoaded",
+  updateNavigation
+);
