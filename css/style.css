@@ -39,7 +39,7 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  background: url("../images/noise.png");
+  background: url("../assets/noise.png");
   opacity: 0.05;
   pointer-events: none;
 }
@@ -284,7 +284,7 @@ body::after {
 
   padding: 40px;
 
-  overflow: hidden;
+  overflow: visible;
 
   backdrop-filter: blur(12px);
 
@@ -451,4 +451,67 @@ body::after {
   font-size: 14px;
   /*color: var(--text-secondary);*/
   color: var(--purple-glow);
+}
+
+.company-stars {
+  margin: 16px 0;
+  font-size: 20px;
+}
+
+.company-star {
+  color: rgba(255,255,255,0.2);
+}
+
+.company-star.filled {
+  color: #ffd166;
+}
+
+.company-expand {
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.35s ease;
+}
+
+.company-card.expanded .company-expand {
+  max-height: 2000px;
+  margin-top: 30px;
+}
+
+.company-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 25px;
+}
+
+.company-detail-grid > div {
+  padding: 5px 0;
+}
+
+.employee-title {
+  padding: 15px 0 0;
+  font-size: 18px;
+}
+
+.employee-row {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 12px;
+
+  padding: 12px 0;
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.05);
+
+  font-size: 14px;
+}
+
+.employee-row a,
+.faction-meta a {
+  color: var(--purple-glow);
+  text-decoration: none;
+}
+
+.employee-row a:hover,
+.faction-meta a:hover {
+  color: white;
 }

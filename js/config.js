@@ -1,5 +1,18 @@
 const OCCULTUS_CONFIG = {
-  allowedFactionIds: [33097, 9171, 9728],
+  allowedFactionIds: [
+    33097, 
+    9171, 
+    9728
+  ],
+
+  companyIds: [
+    112941,
+    120244,
+    121745,
+    122254,
+    120502,
+    124650
+  ],
 
   leadershipRoles: [
     "Leader",

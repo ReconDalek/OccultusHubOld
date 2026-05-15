@@ -45,6 +45,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     setQuote(currentIndex);
 
-  }, 10000);
+  }, 30000);
 
 });

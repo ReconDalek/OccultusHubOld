@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
   <title>Companies | Occultus Hub</title>
 
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/responsive.css">
+
 </head>
 
 <body>
@@ -21,70 +27,73 @@
 
       <div class="logo-container">
         <h1 class="logo-text">OCCULTUS</h1>
+
         <span class="logo-subtitle">
           The Inner Sanctum
         </span>
       </div>
-    </div>
-
-    <div class="nav-center">
-
-      <a href="index.html">  Home</a>
-      <a href="factions.html" id="factionsLink">  Factions</a>
-      <a  href="leadership.html"  id="leadershipLink">  Leadership</a>
 
     </div>
+
+    <div class="nav-center"></div>
 
     <div class="nav-right">
 
-      <div  id="welcomeContainer"  class="welcome-container hidden">
+      <div
+        id="welcomeContainer"
+        class="welcome-container hidden"
+      >
+
         <span id="welcomeText"></span>
-        <button  id="logoutBtn"  class="logout-btn">  Logout</button>
+
+        <button
+          id="logoutBtn"
+          class="logout-btn"
+        >
+          Logout
+        </button>
+
       </div>
-      <button  id="loginBtn"  class="login-btn">  Member Login</button>
+
+      <button
+        id="loginBtn"
+        class="login-btn"
+      >
+        Member Login
+      </button>
+
     </div>
 
   </nav>
 
-  <!-- HEADER -->
-  <section class="hero-section" style="min-height: 40vh;">
+  <!-- HERO -->
+  <section
+    class="hero-section"
+    style="min-height: 40vh;"
+  >
+
     <div class="hero-content">
-      <h1 class="hero-title">Our Devoted Disciples</h1>
+
+      <h1 class="hero-title">
+        Occultus Companies
+      </h1>
+
       <p class="hero-description">
-        Occultus stands beyond the shadows of Torn.<br>
-        Three factions, One collective family.<br>
-        Strength through unity, and loyalty through blood.
+        Industry powers the collective.<br>
+        Every enterprise strengthens the order.
       </p>
+
     </div>
+
   </section>
 
-  <!-- FACTION GRID -->
+  <!-- COMPANY GRID -->
   <section class="faction-section">
 
-    <div class="faction-grid">
-
-      <div class="faction-card" data-faction="33097">
-        <h3>Ore Gasm</h3>
-        <p>The primary order. Elite coordination,
-          war dominance, and long-standing loyalty.</p>
-        <div class="faction-meta">Director: Recon-</div>
-      </div>
-
-      <div class="faction-card" data-faction="9728">
-        <h3>Occul2us</h3>
-        <p>The war division. Built for conflict,
-          retaliation, and tactical deployment.</p>
-        <div class="faction-meta">ID: 9728</div>
-      </div>
-
-      <div class="faction-card" data-faction="9171">
-        <h3>Occul3us</h3>
-        <p>The third circle. Expansion,
-          training, and operational support.</p>
-        <div class="faction-meta">ID: 9171</div>
-      </div>
-
-    </div>
+    <div
+      id="companyGrid"
+      class="faction-grid"
+    ></div>
 
   </section>
 
@@ -92,7 +101,7 @@
   <section class="quote-section">
 
     <div class="quote-box">
-        <p id="rotatingQuote"></p>
+      <p id="rotatingQuote"></p>
     </div>
 
   </section>
@@ -102,9 +111,15 @@
 
     <div class="modal-content">
 
-      <button id="closeModal" class="close-btn">  ×</button>
+      <button
+        id="closeModal"
+        class="close-btn"
+      >
+        ×
+      </button>
 
       <h2>Member Authentication</h2>
+
       <p class="modal-description">
         Enter your Torn API key to access the inner sanctum.
       </p>
@@ -115,7 +130,12 @@
         placeholder="Enter Torn API Key"
       />
 
-      <button  id="submitLogin"  class="submit-btn">  Authenticate</button>
+      <button
+        id="submitLogin"
+        class="submit-btn"
+      >
+        Authenticate
+      </button>
 
       <div id="loginStatus"></div>
 
@@ -127,8 +147,8 @@
   <script src="js/auth.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/ui.js"></script>
-  <script src="js/access.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/companies.js"></script>
 
 </body>
 </html>

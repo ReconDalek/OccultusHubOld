@@ -25,7 +25,7 @@ async function authenticateUser(apiKey) {
     const factionId = keyData.info.user.faction_id;
 
     if (accessLevel < 3) {
-      if (loginStatus) loginStatus.textContent = "Limited API key (min level 3 required)";
+      if (loginStatus) loginStatus.textContent = "Limited API key required minimum";
       return;
     }
 
@@ -62,6 +62,7 @@ async function authenticateUser(apiKey) {
     };
 
     localStorage.setItem("occultusSession", JSON.stringify(session));
+    cacheCompanyData(apiKey);
 
     applySession(session);
 
@@ -90,40 +91,91 @@ function logout() {
 }
 
 function applySession(session) {
-  const loginBtn = document.getElementById("loginBtn");
-  const welcome = document.getElementById("welcomeContainer");
-  const welcomeText = document.getElementById("welcomeText");
 
-  if (loginBtn) loginBtn.style.display = "none";
-  if (welcome) welcome.classList.remove("hidden");
+  const modal =
+    document.getElementById("loginModal");
 
-  let rank = "Visitor";
+  if (modal) {
+    modal.classList.add("hidden");
+  }
 
-  if (session.isLeader) rank = "Leadership";
-  else if (session.isFactionMember) rank = "Member";
-
-  if (welcomeText) {
-    welcomeText.textContent = `${session.name} • ${rank}`;
+  // FORCE NAV REFRESH
+  if (typeof updateNavigation === "function") {
+    updateNavigation();
   }
 
 }
 
-// AUTO INIT
-window.addEventListener("DOMContentLoaded", () => {
-  const session = getSession();
-  if (session) applySession(session);
+async function cacheCompanyData(apiKey) {
 
-  const submit = document.getElementById("submitLogin");
-  const input = document.getElementById("apiKeyInput");
+  try {
 
-  if (submit && input) {
-    submit.onclick = () => {
-      const key = input.value.trim();
-      if (!key) return;
-      authenticateUser(key);
-    };
+    const companies = [];
+
+    for (const companyId of OCCULTUS_CONFIG.companyIds) {
+
+      const response = await fetch(
+        `https://api.torn.com/v2/company?selections=profile,employees&id=${companyId}&comment=OccSite`,
+        {
+          headers: {
+            Authorization: `ApiKey ${apiKey}`,
+            accept: "application/json"
+          }
+        }
+      );
+
+      const data = await response.json();
+
+      companies.push(data);
+
+    }
+
+    localStorage.setItem(
+      "occultusCompanies",
+      JSON.stringify({
+        timestamp: Date.now(),
+        companies
+      })
+    );
+
+  } catch (err) {
+
+    console.error("Company cache failed:", err);
+
   }
 
-  const logoutBtn = document.getElementById("logoutBtn");
-  if (logoutBtn) logoutBtn.onclick = logout;
+}
+
+
+
+
+// AUTO INIT
+window.addEventListener("DOMContentLoaded", () => {
+
+  const session = getSession();
+
+  if (session) {
+    applySession(session);
+  }
+
+  const submit =
+    document.getElementById("submitLogin");
+
+  const input =
+    document.getElementById("apiKeyInput");
+
+  if (submit && input) {
+
+    submit.onclick = () => {
+
+      const key = input.value.trim();
+
+      if (!key) return;
+
+      authenticateUser(key);
+
+    };
+
+  }
+
 });

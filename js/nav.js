@@ -3,6 +3,56 @@ function getSession() {
   return raw ? JSON.parse(raw) : null;
 }
 
+function buildNavLinks(session) {
+
+  const links = [
+    {
+      label: "Home",
+      href: "index.html"
+    }
+  ];
+
+  // FACTION ACCESS
+  if (session && session.isFactionMember) {
+
+    links.push(
+      {
+        label: "Factions",
+        href: "factions.html"
+      },
+      {
+        label: "Companies",
+        href: "companies.html"
+      }
+    );
+
+  }
+
+  // LEADERSHIP ACCESS
+  if (session && session.isLeader) {
+
+    links.push({
+      label: "Leadership",
+      href: "leadership.html"
+    });
+
+  }
+
+  return links;
+}
+
+function renderNavLinks(navCenter, session) {
+
+  const links = buildNavLinks(session);
+
+  navCenter.innerHTML = links.map(link => `
+    <a href="${link.href}">
+      ${link.label}
+    </a>
+  `).join("");
+
+}
+
 function updateNavigation() {
 
   const session = getSession();
@@ -19,23 +69,12 @@ function updateNavigation() {
   const welcomeText =
     document.getElementById("welcomeText");
 
-  const leadershipLink =
-    document.getElementById("leadershipLink");
-
-  const factionsLink =
-    document.getElementById("factionsLink");
-
   if (!navCenter) return;
 
-  // DEFAULT STATE
-  if (factionsLink) {
-    factionsLink.style.display = "inline-block";
-  }
+  // BUILD NAV
+  renderNavLinks(navCenter, session);
 
-  if (leadershipLink) {
-    leadershipLink.style.display = "none";
-  }
-
+  // DEFAULT UI
   if (loginBtn) {
     loginBtn.classList.remove("hidden");
   }
@@ -60,10 +99,8 @@ function updateNavigation() {
 
   let rank = "Visitor";
 
-  if (session.isLeader) {
-    rank = "Leadership";
-  } else if (session.isFactionMember) {
-    rank = "Member";
+  if (session.factionPosition) {
+    rank = session.factionPosition;
   }
 
   if (welcomeText) {
@@ -71,28 +108,21 @@ function updateNavigation() {
       `${session.name} • ${rank}`;
   }
 
-  // FACTION MEMBER NAV
-  if (session.isFactionMember) {
-
-    if (factionsLink) {
-      factionsLink.style.display = "inline-block";
-    }
-
-    // LEADERSHIP NAV
-    if (session.isLeader && leadershipLink) {
-      leadershipLink.style.display = "inline-block";
-    }
-
-  }
-
   const logoutBtn =
     document.getElementById("logoutBtn");
 
   if (logoutBtn) {
+
     logoutBtn.onclick = () => {
-      localStorage.removeItem("occultusSession");
+
+      localStorage.removeItem(
+        "occultusSession"
+      );
+
       location.reload();
+
     };
+
   }
 
 }
