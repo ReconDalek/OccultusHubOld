@@ -515,3 +515,13 @@ body::after {
 .faction-meta a:hover {
   color: white;
 }
+
+.faction-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.faction-link:hover {
+  text-decoration: none;
+}
