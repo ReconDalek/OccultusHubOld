@@ -53,7 +53,7 @@ async function authenticateUser(apiKey, rememberMe, stayLoggedIn) {
   try {
     status.textContent = "Authenticating...";
 
-    const res = await fetch("/api/auth/login", {
+    const res = await fetch("/functions/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
