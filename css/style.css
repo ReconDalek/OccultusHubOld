@@ -385,6 +385,13 @@ body::after {
   margin-bottom: 24px;
 }
 
+.modal-footer {
+  color: var(--text-secondary);
+  margin: 40px 0 0;
+  font-style: italic;
+  font-size: 13px;
+}
+
 .modal-content input {
   width: 100%;
 

@@ -89,7 +89,7 @@ function renderCompanies() {
 
         <div class="faction-meta">
 
-          Company:
+          Company ID:
           <a
             href="https://www.torn.com/joblist.php?step=search#!p=corpinfo&ID=${profile.id}"
             target="_blank"

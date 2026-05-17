@@ -1,181 +1,167 @@
-const API_KEY_URL =
-  "https://api.torn.com/v2/key/info?comment=OccSite";
+const SESSION_KEY = "occultusSession";
 
-const USER_URL =
-  "https://api.torn.com/v2/user?selections=basic,faction&comment=OccSite";
+/* -----------------------------
+   SESSION STORAGE HELPERS
+------------------------------*/
 
-async function authenticateUser(apiKey) {
+function getSessionToken() {
+  return localStorage.getItem(SESSION_KEY);
+}
+
+function setSessionToken(token) {
+  localStorage.setItem(SESSION_KEY, token);
+}
+
+function clearSessionToken() {
+  localStorage.removeItem(SESSION_KEY);
+}
+
+/* -----------------------------
+   APPLY UI SESSION STATE
+------------------------------*/
+
+function applySession(user) {
+  const welcome = document.getElementById("welcomeContainer");
+  const text = document.getElementById("welcomeText");
+  const loginBtn = document.getElementById("loginBtn");
+
+  if (welcome) welcome.classList.remove("hidden");
+  if (text) text.textContent = user.username;
+
+  if (loginBtn) loginBtn.style.display = "none";
+}
+
+/* -----------------------------
+   RESET UI STATE
+------------------------------*/
+
+function clearSessionUI() {
+  const welcome = document.getElementById("welcomeContainer");
+  const loginBtn = document.getElementById("loginBtn");
+
+  if (welcome) welcome.classList.add("hidden");
+  if (loginBtn) loginBtn.style.display = "inline-block";
+}
+
+/* -----------------------------
+   LOGIN
+------------------------------*/
+
+async function authenticateUser(apiKey, rememberMe, stayLoggedIn) {
+  const status = document.getElementById("loginStatus");
+
   try {
-    const loginStatus = document.getElementById("loginStatus");
-    if (loginStatus) loginStatus.textContent = "Authenticating...";
+    status.textContent = "Authenticating...";
 
-    // KEY CHECK
-    const keyRes = await fetch(API_KEY_URL, {
-      headers: {
-        Authorization: `ApiKey ${apiKey}`,
-        accept: "application/json"
-      }
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        apiKey,
+        rememberMe,
+        stayLoggedIn
+      })
     });
 
-    const keyData = await keyRes.json();
-    if (!keyData.info) throw new Error("Invalid key response");
+    const data = await res.json();
 
-    const accessLevel = keyData.info.access.level;
-    const userId = keyData.info.user.id;
-    const factionId = keyData.info.user.faction_id;
-
-    if (accessLevel < 3) {
-      if (loginStatus) loginStatus.textContent = "Limited API key required minimum";
+    if (!res.ok) {
+      status.textContent = data.error || "Login failed.";
       return;
     }
 
-    // USER DATA
-    const userRes = await fetch(USER_URL, {
-      headers: {
-        Authorization: `ApiKey ${apiKey}`,
-        accept: "application/json"
-      }
-    });
+    setSessionToken(data.token);
 
-    const userData = await userRes.json();
-
-    const name = userData.profile.name;
-    const factionPosition = userData.faction.position;
-
-    const isFactionMember =
-      OCCULTUS_CONFIG.allowedFactionIds.includes(factionId);
-
-    const isLeader =
-      isFactionMember &&
-      OCCULTUS_CONFIG.leadershipRoles.includes(factionPosition);
-
-    const session = {
-      apiKey,
-      userId,
-      name,
-      factionId,
-      factionPosition,
-      isFactionMember,
-      isLeader,
-      accessLevel,
-      timestamp: Date.now()
-    };
-
-    localStorage.setItem("occultusSession", JSON.stringify(session));
-    cacheCompanyData(apiKey);
-
-    applySession(session);
+    applySession(data.user);
 
     const modal = document.getElementById("loginModal");
     if (modal) modal.classList.add("hidden");
 
-    if (loginStatus) loginStatus.textContent = "";
-
-    return session;
+    status.textContent = "";
 
   } catch (err) {
     console.error(err);
-    const loginStatus = document.getElementById("loginStatus");
-    if (loginStatus) loginStatus.textContent = "Login failed.";
+    status.textContent = "Network error.";
   }
 }
 
-function getSession() {
-  const raw = localStorage.getItem("occultusSession");
-  return raw ? JSON.parse(raw) : null;
+/* -----------------------------
+   SESSION VALIDATION
+------------------------------*/
+
+async function checkSession() {
+  const token = getSessionToken();
+  if (!token) return;
+
+  try {
+    const res = await fetch("/api/auth/session", {
+      headers: { Authorization: token }
+    });
+
+    const data = await res.json();
+
+    if (!data.valid) {
+      clearSessionToken();
+      clearSessionUI();
+      return;
+    }
+
+    applySession(data.user);
+
+  } catch (err) {
+    console.error("Session check failed:", err);
+    clearSessionToken();
+    clearSessionUI();
+  }
 }
 
-function logout() {
-  localStorage.removeItem("occultusSession");
+/* -----------------------------
+   LOGOUT
+------------------------------*/
+
+async function logout() {
+  const token = getSessionToken();
+
+  try {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token })
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
+  clearSessionToken();
+  clearSessionUI();
+
   location.reload();
 }
 
-function applySession(session) {
+/* -----------------------------
+   EVENT BOOTSTRAP
+------------------------------*/
 
-  const modal =
-    document.getElementById("loginModal");
-
-  if (modal) {
-    modal.classList.add("hidden");
-  }
-
-  // FORCE NAV REFRESH
-  if (typeof updateNavigation === "function") {
-    updateNavigation();
-  }
-
-}
-
-async function cacheCompanyData(apiKey) {
-
-  try {
-
-    const companies = [];
-
-    for (const companyId of OCCULTUS_CONFIG.companyIds) {
-
-      const response = await fetch(
-        `https://api.torn.com/v2/company?selections=profile,employees&id=${companyId}&comment=OccSite`,
-        {
-          headers: {
-            Authorization: `ApiKey ${apiKey}`,
-            accept: "application/json"
-          }
-        }
-      );
-
-      const data = await response.json();
-
-      companies.push(data);
-
-    }
-
-    localStorage.setItem(
-      "occultusCompanies",
-      JSON.stringify({
-        timestamp: Date.now(),
-        companies
-      })
-    );
-
-  } catch (err) {
-
-    console.error("Company cache failed:", err);
-
-  }
-
-}
-
-
-
-
-// AUTO INIT
 window.addEventListener("DOMContentLoaded", () => {
+  checkSession();
 
-  const session = getSession();
-
-  if (session) {
-    applySession(session);
-  }
-
-  const submit =
-    document.getElementById("submitLogin");
-
-  const input =
-    document.getElementById("apiKeyInput");
+  const submit = document.getElementById("submitLogin");
+  const input = document.getElementById("apiKeyInput");
 
   if (submit && input) {
-
     submit.onclick = () => {
+      const apiKey = input.value.trim();
+      if (!apiKey) return;
 
-      const key = input.value.trim();
+      const rememberMe = document.getElementById("rememberMe")?.checked || false;
+      const stayLoggedIn = document.getElementById("stayLoggedIn")?.checked || false;
 
-      if (!key) return;
-
-      authenticateUser(key);
-
+      authenticateUser(apiKey, rememberMe, stayLoggedIn);
     };
-
   }
 
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.onclick = logout;
+  }
 });
