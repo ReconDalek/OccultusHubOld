@@ -53,7 +53,7 @@ async function authenticateUser(apiKey, rememberMe, stayLoggedIn) {
   try {
     status.textContent = "Authenticating...";
 
-    const res = await fetch("/functions/api/auth/login", {
+    const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -98,7 +98,7 @@ async function checkSession() {
   if (!token) return;
 
   try {
-    const res = await fetch("api/auth/session", {
+    const res = await fetch("/api/auth/session", {
       headers: { Authorization: token }
     });
 
@@ -127,7 +127,7 @@ async function logout() {
   const token = getSessionToken();
 
   try {
-    await fetch("api/auth/logout", {
+    await fetch("/api/auth/logout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token })
