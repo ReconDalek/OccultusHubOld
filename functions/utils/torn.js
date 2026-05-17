@@ -1,4 +1,4 @@
-import { decrypt } from "./utils/crypto";
+import { decrypt } from "./crypto";
 
 export async function getRandomKey(env) {
   const users = await env.DB.prepare(

@@ -1,4 +1,4 @@
-import { encrypt, decrypt } from "../utils/crypto";
+import { encrypt } from "../utils/crypto";
 import { generateToken, sessionExpiry } from "../utils/session";
 
 export async function onRequestPost(context) {
