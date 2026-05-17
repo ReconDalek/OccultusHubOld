@@ -63,7 +63,12 @@ async function authenticateUser(apiKey, rememberMe, stayLoggedIn) {
       })
     });
 
-    const data = await res.json();
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error("Invalid server response");
+    }
 
     if (!res.ok) {
       status.textContent = data.error || "Login failed.";
@@ -71,7 +76,6 @@ async function authenticateUser(apiKey, rememberMe, stayLoggedIn) {
     }
 
     setSessionToken(data.token);
-
     applySession(data.user);
 
     const modal = document.getElementById("loginModal");
@@ -94,7 +98,7 @@ async function checkSession() {
   if (!token) return;
 
   try {
-    const res = await fetch("/api/auth/session", {
+    const res = await fetch("api/auth/session", {
       headers: { Authorization: token }
     });
 
@@ -123,7 +127,7 @@ async function logout() {
   const token = getSessionToken();
 
   try {
-    await fetch("/api/auth/logout", {
+    await fetch("api/auth/logout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token })
