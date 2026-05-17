@@ -1,6 +1,3 @@
-console.log("ENV DB:", env.DB);
-console.log("ENV SECRET:", env.OCCULTUS_SECRET);
-
 import { encrypt } from "../../utils/crypto";
 import { generateToken, sessionExpiry } from "../../utils/session";
 
