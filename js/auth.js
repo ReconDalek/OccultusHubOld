@@ -422,3 +422,7 @@ window.addEventListener(
     }
   }
 );
+
+window.getUserSession = getUserSession;
+window.checkSession = checkSession;
+window.enrichUserAccess = enrichUserAccess;

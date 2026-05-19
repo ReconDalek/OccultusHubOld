@@ -49,6 +49,7 @@
 
     <div id="dashboard" style="display:none;">
 
+      <!--
       <div class="faction-card">
         <h3>Active Factions</h3>
         <ul>
@@ -57,7 +58,8 @@
           <li>Occul3us (9171)</li>
         </ul>
       </div>
-
+      -->
+      
       <div class="faction-card" style="margin-top:30px;">
         <h3>Command Controls</h3>
 
@@ -112,24 +114,7 @@
   <script src="js/ui.js"></script>
   <script src="js/access.js"></script>
   <script src="js/app.js"></script>
-  <script>
-    window.addEventListener("DOMContentLoaded", () => {
-
-      const session = JSON.parse(localStorage.getItem("occultusSession"));
-
-      const accessDenied = document.getElementById("accessDenied");
-      const dashboard = document.getElementById("dashboard");
-
-      if (!session || !session.isLeader) {
-        accessDenied.style.display = "block";
-        dashboard.style.display = "none";
-        return;
-      }
-
-      dashboard.style.display = "block";
-      accessDenied.style.display = "none";
-    });
-  </script>
+  <script src="js/leadership.js"></script>
 
 </body>
 </html>
