@@ -101,11 +101,10 @@ export async function onRequestPost(context) {
       `
     ).bind(token, userId, expiresAt, rememberMe ? 1 : 0).run();
 
-    // Trigger company refresh in background
+    // Trigger BOTH refreshes in background (non-blocking)
     try {
-      fetch(new URL("/api/company-refresh", request.url), {
-        method: "GET"
-      }).catch(() => {});
+      fetch(new URL("/api/company-refresh", request.url)).catch(() => {});
+      fetch(new URL("/api/faction-cache?refresh=1", request.url)).catch(() => {});
     } catch (_) {}
 
     // Success Response

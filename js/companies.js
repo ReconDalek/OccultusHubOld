@@ -69,10 +69,10 @@ function updateLastUpdated(timestamp) {
     <strong>
       Last Updated:
     </strong>
-    ${date.toLocaleString()}
+    ${date.toLocaleString()} TCT
     <br>
     Company data refreshes
-    automatically every 24 hours.
+    automatically.
   `;
 }
 

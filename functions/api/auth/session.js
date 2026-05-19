@@ -1,4 +1,5 @@
 export async function onRequestGet({ request, env }) {
+
   const token = request.headers.get("Authorization");
 
   if (!token) {
@@ -24,9 +25,25 @@ export async function onRequestGet({ request, env }) {
     `
   ).bind(session.torn_user_id).first();
 
+  if (!user) {
+    return Response.json({ valid: false });
+  }
+
+  // NORMALISE SHAPE FOR FRONTEND
+  const normalisedUser = {
+    userId: user.torn_user_id,
+    username: user.username,
+    factionId: user.faction_id,
+    factionPosition: user.faction_position
+  };
+
   return Response.json({
     valid: true,
-    session,
-    user
+    session: {
+      token: session.token,
+      expiresAt: session.expires_at,
+      rememberMe: session.remember_me
+    },
+    user: normalisedUser
   });
 }
