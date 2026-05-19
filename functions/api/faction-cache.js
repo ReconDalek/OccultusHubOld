@@ -1,4 +1,4 @@
-import { getRandomKey } from "./torn";
+import { getRandomKey } from "../utils/torn";
 
 const FACTION_IDS = [33097, 9728, 9171];
 
