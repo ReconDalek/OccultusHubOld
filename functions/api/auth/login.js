@@ -101,6 +101,13 @@ export async function onRequestPost(context) {
       `
     ).bind(token, userId, expiresAt, rememberMe ? 1 : 0).run();
 
+    // Trigger company refresh in background
+    try {
+      fetch(new URL("/api/company-refresh", request.url), {
+        method: "GET"
+      }).catch(() => {});
+    } catch (_) {}
+
     // Success Response
     return new Response(JSON.stringify({
       token,
@@ -110,9 +117,11 @@ export async function onRequestPost(context) {
         factionId,
         factionPosition
       }
-    }), { 
-      status: 200, 
-      headers: { "Content-Type": "application/json" } 
+    }), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json"
+      }
     });
 
   } catch (error) {

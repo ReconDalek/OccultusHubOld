@@ -1,6 +1,13 @@
 function getSession() {
-  const raw = localStorage.getItem("occultusSession");
-  return raw ? JSON.parse(raw) : null;
+
+  const raw =
+    localStorage.getItem(
+      "occultusUser"
+    );
+
+  return raw
+    ? JSON.parse(raw)
+    : null;
 }
 
 function buildNavLinks(session) {
@@ -12,119 +19,126 @@ function buildNavLinks(session) {
     }
   ];
 
-  // FACTION ACCESS
-  if (session && session.isFactionMember) {
+  if (
+    session?.isFactionMember
+  ) {
 
     links.push(
       {
         label: "Factions",
-        href: "factions.html"
+        href:
+          "factions.html"
       },
       {
         label: "Companies",
-        href: "companies.html"
+        href:
+          "companies.html"
       }
     );
-
   }
 
-  // LEADERSHIP ACCESS
-  if (session && session.isLeader) {
+  if (
+    session?.isLeader
+  ) {
 
     links.push({
-      label: "Leadership",
-      href: "leadership.html"
+      label:
+        "Leadership",
+      href:
+        "leadership.html"
     });
-
   }
 
   return links;
 }
 
-function renderNavLinks(navCenter, session) {
+function renderNavLinks(
+  navCenter,
+  session
+) {
 
-  const links = buildNavLinks(session);
+  const links =
+    buildNavLinks(session);
 
-  navCenter.innerHTML = links.map(link => `
-    <a href="${link.href}">
-      ${link.label}
-    </a>
-  `).join("");
-
+  navCenter.innerHTML =
+    links.map(link => `
+      <a href="${link.href}">
+        ${link.label}
+      </a>
+    `).join("");
 }
 
 function updateNavigation() {
 
-  const session = getSession();
+  const session =
+    getSession();
 
   const navCenter =
-    document.querySelector(".nav-center");
+    document.querySelector(
+      ".nav-center"
+    );
 
   const loginBtn =
-    document.getElementById("loginBtn");
+    document.getElementById(
+      "loginBtn"
+    );
 
   const welcomeContainer =
-    document.getElementById("welcomeContainer");
+    document.getElementById(
+      "welcomeContainer"
+    );
 
   const welcomeText =
-    document.getElementById("welcomeText");
+    document.getElementById(
+      "welcomeText"
+    );
 
   if (!navCenter) return;
 
-  // BUILD NAV
-  renderNavLinks(navCenter, session);
+  renderNavLinks(
+    navCenter,
+    session
+  );
 
-  // DEFAULT UI
-  if (loginBtn) {
-    loginBtn.classList.remove("hidden");
-  }
-
-  if (welcomeContainer) {
-    welcomeContainer.classList.add("hidden");
-  }
-
-  // NOT LOGGED IN
   if (!session) {
+
+    if (loginBtn) {
+      loginBtn.classList.remove(
+        "hidden"
+      );
+    }
+
+    if (
+      welcomeContainer
+    ) {
+      welcomeContainer.classList.add(
+        "hidden"
+      );
+    }
+
     return;
   }
 
-  // LOGGED IN
   if (loginBtn) {
-    loginBtn.classList.add("hidden");
+    loginBtn.classList.add(
+      "hidden"
+    );
   }
 
-  if (welcomeContainer) {
-    welcomeContainer.classList.remove("hidden");
+  if (
+    welcomeContainer
+  ) {
+    welcomeContainer.classList.remove(
+      "hidden"
+    );
   }
 
-  let rank = "Visitor";
-
-  if (session.factionPosition) {
-    rank = session.factionPosition;
-  }
-
-  if (welcomeText) {
+  if (
+    welcomeText
+  ) {
     welcomeText.textContent =
-      `${session.name} • ${rank}`;
+      `${session.username} • ${session.factionPosition}`;
   }
-
-  const logoutBtn =
-    document.getElementById("logoutBtn");
-
-  if (logoutBtn) {
-
-    logoutBtn.onclick = () => {
-
-      localStorage.removeItem(
-        "occultusSession"
-      );
-
-      location.reload();
-
-    };
-
-  }
-
 }
 
 window.addEventListener(
