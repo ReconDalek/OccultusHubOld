@@ -40,7 +40,9 @@ function buildFactionCard(faction) {
 
       <h3>${basic.name}</h3>
 
-      <p>${basic.tag}</p>
+      <p style="color: ${basic.is_enlisted ? 'green' : 'red'}; font-weight: bold;">
+        ${basic.is_enlisted ? 'Enlisted' : 'Not Enlisted'}
+      </p>
 
       <div class="faction-meta">
         Members: ${basic.members} / ${basic.capacity}
@@ -61,7 +63,7 @@ function buildFactionCard(faction) {
         <div class="member-list">
 
           ${members.map(m => `
-            <div class="member-row">
+            <div class="employee-row">
 
               <a href="https://www.torn.com/profiles.php?XID=${m.id}" target="_blank">
                 ${m.name}
