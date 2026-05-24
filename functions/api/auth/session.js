@@ -34,7 +34,8 @@ export async function onRequestGet({ request, env }) {
     userId: user.torn_user_id,
     username: user.username,
     factionId: user.faction_id,
-    factionPosition: user.faction_position
+    factionPosition: user.faction_position,
+    image: user.image
   };
 
   return Response.json({

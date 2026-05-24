@@ -24,20 +24,59 @@
     <div class="nav-left">
       <div class="logo-container">
         <h1 class="logo-text">OCCULTUS</h1>
-        <span class="logo-subtitle">
-          The Inner Sanctum
-        </span>
+        <span class="logo-subtitle">The Inner Sanctum</span>
       </div>
     </div>
 
     <div class="nav-center"></div>
 
     <div class="nav-right">
-      <div  id="welcomeContainer"  class="welcome-container hidden">
-        <span id="welcomeText"></span>
-        <button  id="logoutBtn"  class="logout-btn">  Logout</button>
+
+      <!-- MEMBER CARD -->
+      <div
+        id="memberCardContainer"
+        class="member-card-container hidden"
+      >
+        <button id="memberCardBtn" class="member-card-btn">
+          <img
+            id="memberAvatar"
+            class="member-avatar"
+            src=""
+            alt="Member Avatar"
+          />
+        </button>
+
+        <div id="memberDropdown" class="member-dropdown hidden">
+
+          <div class="member-header">
+
+            <img
+              id="memberDropdownAvatar"
+              class="member-dropdown-avatar"
+              src=""
+              alt="Member Avatar"
+            />
+
+            <div>
+              <div id="memberName"></div>
+              <div id="memberRole"></div>
+              <div id="memberFaction"></div>
+            </div>
+
+          </div>
+
+          <div class="member-actions">
+            <button id="logoutBtn" class="logout-btn">Logout</button>
+          </div>
+
+        </div>
       </div>
-      <button  id="loginBtn"  class="login-btn">  Member Login</button>
+
+      <!-- LOGIN BUTTON (ONLY ONE) -->
+      <button id="loginBtn" class="login-btn">
+        Member Login
+      </button>
+
     </div>
 
   </nav>

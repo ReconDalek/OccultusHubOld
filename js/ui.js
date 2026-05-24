@@ -33,4 +33,49 @@ window.addEventListener("DOMContentLoaded", () => {
 
   });
 
+  const memberBtn =
+  document.getElementById(
+    "memberCardBtn"
+  );
+
+const dropdown =
+  document.getElementById(
+    "memberDropdown"
+  );
+
+if (
+  memberBtn &&
+  dropdown
+) {
+
+  memberBtn.addEventListener(
+    "click",
+    (e) => {
+
+      e.stopPropagation();
+
+      dropdown.classList.toggle(
+        "hidden"
+      );
+    }
+  );
+
+  document.addEventListener(
+    "click",
+    () => {
+
+      dropdown.classList.add(
+        "hidden"
+      );
+    }
+  );
+
+  dropdown.addEventListener(
+    "click",
+    (e) => {
+      e.stopPropagation();
+    }
+  );
+}
+
 });

@@ -95,7 +95,9 @@ body::after {
 .nav-right {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 12px;
+  margin-left: auto; 
 }
 
 .nav-center {
@@ -561,4 +563,75 @@ html {
 
 .faction-card.expanded {
   border: 1px solid rgba(255,255,255,0.2);
+}
+
+.member-card-container {
+  position: relative;
+}
+
+.member-card-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.member-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid #000;
+  object-fit: cover;
+}
+
+.member-dropdown {
+  position: absolute;
+  top: 65px;
+  right: 0;
+  width: 260px;
+  background:
+    rgba(12, 12, 12, 0.96);
+  border:
+    1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 18px;
+  z-index: 1000;
+  box-shadow:
+    0 10px 40px rgba(0,0,0,.45);
+}
+
+.member-header {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.member-dropdown-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #000;
+  object-fit: cover;
+}
+
+#memberName {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+#memberRole,
+#memberFaction {
+  font-size: 13px;
+  color:
+    var(--text-secondary);
+}
+
+.member-actions {
+  margin-top: 16px;
+}
+
+.member-card-container {
+  position: relative;
+  display: flex;
+  align-items: center;
 }

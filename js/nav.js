@@ -1,4 +1,13 @@
+const DEFAULT_PROFILE_IMAGE =
+  "https://www.torn.com/images/profile_man.jpg";
+
 function getSession() {
+
+  if (
+    window.getUserSession
+  ) {
+    return window.getUserSession();
+  }
 
   const raw =
     localStorage.getItem(
@@ -68,76 +77,144 @@ function renderNavLinks(
     `).join("");
 }
 
+function setSafeImage(
+  imgElement,
+  src
+) {
+
+  if (!imgElement) return;
+
+  imgElement.src =
+    src ||
+    DEFAULT_PROFILE_IMAGE;
+
+  imgElement.onerror =
+    () => {
+
+      imgElement.onerror =
+        null;
+
+      imgElement.src =
+        DEFAULT_PROFILE_IMAGE;
+    };
+}
+
 function updateNavigation() {
 
-  const session =
-    getSession();
+  const session = getSession();
 
   const navCenter =
-    document.querySelector(
-      ".nav-center"
-    );
+    document.querySelector(".nav-center");
 
   const loginBtn =
-    document.getElementById(
-      "loginBtn"
-    );
+    document.getElementById("loginBtn");
 
-  const welcomeContainer =
-    document.getElementById(
-      "welcomeContainer"
-    );
+  const memberContainer =
+    document.getElementById("memberCardContainer");
 
-  const welcomeText =
-    document.getElementById(
-      "welcomeText"
-    );
+  const avatar =
+    document.getElementById("memberAvatar");
+
+  const dropdownAvatar =
+    document.getElementById("memberDropdownAvatar");
+
+  const memberName =
+    document.getElementById("memberName");
+
+  const memberRole =
+    document.getElementById("memberRole");
+
+  const memberFaction =
+    document.getElementById("memberFaction");
+
+  const dropdown =
+    document.getElementById("memberDropdown");
 
   if (!navCenter) return;
 
-  renderNavLinks(
-    navCenter,
-    session
-  );
+  renderNavLinks(navCenter, session);
 
+  /* -----------------------------
+     NOT LOGGED IN STATE
+  ------------------------------*/
   if (!session) {
 
     if (loginBtn) {
-      loginBtn.classList.remove(
-        "hidden"
-      );
+      loginBtn.classList.remove("hidden");
     }
 
-    if (
-      welcomeContainer
-    ) {
-      welcomeContainer.classList.add(
-        "hidden"
-      );
+    if (memberContainer) {
+      memberContainer.classList.add("hidden");
+    }
+
+    // ensure dropdown is reset
+    if (dropdown) {
+      dropdown.classList.add("hidden");
     }
 
     return;
   }
 
+  /* -----------------------------
+     LOGGED IN STATE
+  ------------------------------*/
+
   if (loginBtn) {
-    loginBtn.classList.add(
-      "hidden"
-    );
+    loginBtn.classList.add("hidden");
   }
 
-  if (
-    welcomeContainer
-  ) {
-    welcomeContainer.classList.remove(
-      "hidden"
-    );
+  if (memberContainer) {
+    memberContainer.classList.remove("hidden");
   }
 
-  if (
-    welcomeText
-  ) {
-    welcomeText.textContent =
-      `${session.username} • ${session.factionPosition}`;
+  // ALWAYS close dropdown on state change
+  if (dropdown) {
+    dropdown.classList.add("hidden");
+  }
+
+  const factionNames = {
+    33097: "Occultus",
+    9728: "Occul2us",
+    9171: "Occul3us"
+  };
+
+  const image =
+    session.image ||
+    DEFAULT_PROFILE_IMAGE;
+
+  setSafeImage(avatar, image);
+  setSafeImage(dropdownAvatar, image);
+
+  if (memberName) {
+    memberName.textContent =
+      session.username || "Unknown User";
+  }
+
+  if (memberRole) {
+    memberRole.textContent =
+      session.factionPosition || "Visitor";
+  }
+
+  if (memberFaction) {
+    memberFaction.textContent =
+      factionNames[Number(session.factionId)] || "Visitor";
+  }
+
+  /* -----------------------------
+     ENSURE TOGGLE IS BOUND ONCE
+  ------------------------------*/
+
+  const memberBtn =
+    document.getElementById("memberCardBtn");
+
+  if (memberBtn && !memberBtn.dataset.bound) {
+
+    memberBtn.addEventListener("click", () => {
+      if (!dropdown) return;
+      dropdown.classList.toggle("hidden");
+    });
+
+    memberBtn.dataset.bound = "true";
   }
 }
 
@@ -145,3 +222,6 @@ window.addEventListener(
   "DOMContentLoaded",
   updateNavigation
 );
+
+window.updateNavigation =
+  updateNavigation;

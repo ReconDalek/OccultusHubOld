@@ -30,19 +30,56 @@ export async function onRequestPost(context) {
     }
 
     const userId = keyData.info.user?.id;
-    const accessLevel = keyData.info.access?.level;
+    const accessLevel =
+      Number(keyData.info.access?.level || 0);
+
+    // Require Limited Access (3) or Full Access (4)
+    if (accessLevel < 3) {
+      return new Response(
+        JSON.stringify({
+          error:
+            "API key must be Limited Access or higher."
+        }),
+        {
+          status: 403,
+          headers: {
+            "Content-Type":
+              "application/json"
+          }
+        }
+      );
+    }
 
     // 2. Fetch User Data
     const userRes = await fetch(
-      "https://api.torn.com/v2/user?selections=basic,faction",
-      { headers: { Authorization: `ApiKey ${apiKey}` } }
+      "https://api.torn.com/v2/user?selections=basic,faction,profile",
+      {
+        headers: {
+          Authorization: `ApiKey ${apiKey}`
+        }
+      }
     );
+
     const userData = await userRes.json();
 
     // Defensive programming against Torn API v2 structure changes
-    const username = userData?.profile?.name || userData?.basic?.name || "Unknown User";
-    const factionId = userData?.faction?.id || userData?.faction?.faction_id || 0;
-    const factionPosition = userData?.faction?.position || "Member";
+    const username =
+      userData?.profile?.name ||
+      userData?.basic?.name ||
+      "Unknown User";
+
+    const factionId =
+      userData?.faction?.id ||
+      userData?.faction?.faction_id ||
+      0;
+
+    const factionPosition =
+      userData?.faction?.position ||
+      "Member";
+
+    const profileImage =
+      userData?.profile?.image ||
+      null;
 
     // 3. Encrypt API Key
     if (!env.OCCULTUS_SECRET) {
@@ -62,18 +99,20 @@ export async function onRequestPost(context) {
         username,
         faction_id,
         faction_position,
+        image,
         encrypted_api_key,
         encryption_iv,
         access_level,
         last_login,
         updated_at
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
       ON CONFLICT(torn_user_id)
       DO UPDATE SET
         username=excluded.username,
         faction_id=excluded.faction_id,
         faction_position=excluded.faction_position,
+        image=excluded.image,
         encrypted_api_key=excluded.encrypted_api_key,
         encryption_iv=excluded.encryption_iv,
         access_level=excluded.access_level,
@@ -85,10 +124,11 @@ export async function onRequestPost(context) {
       username,
       factionId,
       factionPosition,
+      profileImage,
       encrypted.data,
       encrypted.iv,
       accessLevel
-    ).run();
+    ).run();  
 
     // 5. Create Session
     const token = generateToken();
@@ -114,7 +154,8 @@ export async function onRequestPost(context) {
         userId,
         username,
         factionId,
-        factionPosition
+        factionPosition,
+        image: profileImage
       }
     }), {
       status: 200,
