@@ -101,75 +101,166 @@ function setSafeImage(
 
 function updateNavigation() {
 
-  const session = getSession();
+  const session =
+    getSession() ||
+    window.__occultusSessionCache ||
+    null;
+
+  window.__occultusSessionCache =
+    session;
 
   const navCenter =
-    document.querySelector(".nav-center");
+    document.querySelector(
+      ".nav-center"
+    );
 
   const loginBtn =
-    document.getElementById("loginBtn");
+    document.getElementById(
+      "loginBtn"
+    );
 
   const memberContainer =
-    document.getElementById("memberCardContainer");
+    document.getElementById(
+      "memberCardContainer"
+    );
 
   const avatar =
-    document.getElementById("memberAvatar");
+    document.getElementById(
+      "memberAvatar"
+    );
 
   const dropdownAvatar =
-    document.getElementById("memberDropdownAvatar");
+    document.getElementById(
+      "memberDropdownAvatar"
+    );
 
   const memberName =
-    document.getElementById("memberName");
+    document.getElementById(
+      "memberName"
+    );
 
   const memberRole =
-    document.getElementById("memberRole");
+    document.getElementById(
+      "memberRole"
+    );
 
   const memberFaction =
-    document.getElementById("memberFaction");
+    document.getElementById(
+      "memberFaction"
+    );
 
   const dropdown =
-    document.getElementById("memberDropdown");
+    document.getElementById(
+      "memberDropdown"
+    );
+
+  const memberBtn =
+    document.getElementById(
+      "memberCardBtn"
+    );
 
   if (!navCenter) return;
 
-  renderNavLinks(navCenter, session);
+  renderNavLinks(
+    navCenter,
+    session
+  );
 
   /* -----------------------------
-     NOT LOGGED IN STATE
+    ENSURE TOGGLE IS BOUND ONCE
+  ------------------------------*/
+
+  if (
+    memberBtn &&
+    dropdown &&
+    !memberBtn.dataset.bound
+  ) {
+
+    memberBtn.addEventListener(
+      "click",
+      (e) => {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        dropdown.classList.toggle(
+          "hidden"
+        );
+      },
+      true
+    );
+
+    dropdown.addEventListener(
+      "click",
+      (e) => {
+        e.stopPropagation();
+      }
+    );
+
+    document.addEventListener(
+      "click",
+      (e) => {
+
+        const clickedInside =
+          memberBtn.contains(
+            e.target
+          ) ||
+          dropdown.contains(
+            e.target
+          );
+
+        if (!clickedInside) {
+          dropdown.classList.add(
+            "hidden"
+          );
+        }
+      },
+      true
+    );
+
+    memberBtn.dataset.bound =
+      "true";
+  }
+
+  /* -----------------------------
+     NOT LOGGED IN
   ------------------------------*/
   if (!session) {
 
     if (loginBtn) {
-      loginBtn.classList.remove("hidden");
+      loginBtn.classList.remove(
+        "hidden"
+      );
     }
 
     if (memberContainer) {
-      memberContainer.classList.add("hidden");
+      memberContainer.classList.add(
+        "hidden"
+      );
     }
 
-    // ensure dropdown is reset
     if (dropdown) {
-      dropdown.classList.add("hidden");
+      dropdown.classList.add(
+        "hidden"
+      );
     }
 
     return;
   }
 
   /* -----------------------------
-     LOGGED IN STATE
+     LOGGED IN
   ------------------------------*/
-
   if (loginBtn) {
-    loginBtn.classList.add("hidden");
+    loginBtn.classList.add(
+      "hidden"
+    );
   }
 
   if (memberContainer) {
-    memberContainer.classList.remove("hidden");
-  }
-
-  // ALWAYS close dropdown on state change
-  if (dropdown) {
-    dropdown.classList.add("hidden");
+    memberContainer.classList.remove(
+      "hidden"
+    );
   }
 
   const factionNames = {
@@ -182,39 +273,35 @@ function updateNavigation() {
     session.image ||
     DEFAULT_PROFILE_IMAGE;
 
-  setSafeImage(avatar, image);
-  setSafeImage(dropdownAvatar, image);
+  setSafeImage(
+    avatar,
+    image
+  );
+
+  setSafeImage(
+    dropdownAvatar,
+    image
+  );
 
   if (memberName) {
     memberName.textContent =
-      session.username || "Unknown User";
+      session.username ||
+      "Unknown User";
   }
 
   if (memberRole) {
     memberRole.textContent =
-      session.factionPosition || "Visitor";
+      session.factionPosition ||
+      "Visitor";
   }
 
   if (memberFaction) {
     memberFaction.textContent =
-      factionNames[Number(session.factionId)] || "Visitor";
-  }
-
-  /* -----------------------------
-     ENSURE TOGGLE IS BOUND ONCE
-  ------------------------------*/
-
-  const memberBtn =
-    document.getElementById("memberCardBtn");
-
-  if (memberBtn && !memberBtn.dataset.bound) {
-
-    memberBtn.addEventListener("click", () => {
-      if (!dropdown) return;
-      dropdown.classList.toggle("hidden");
-    });
-
-    memberBtn.dataset.bound = "true";
+      factionNames[
+        Number(
+          session.factionId
+        )
+      ] || "Visitor";
   }
 }
 

@@ -165,6 +165,8 @@ function clearSessionUI() {
   ) {
     updateNavigation();
   }
+  window.__occultusSessionCache = enrichedUser;
+window.updateNavigation?.();
 }
 
 /* -----------------------------

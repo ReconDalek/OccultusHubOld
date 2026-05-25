@@ -19,7 +19,12 @@ export async function onRequestGet({ request, env }) {
 
   const user = await env.DB.prepare(
     `
-    SELECT torn_user_id, username, faction_id, faction_position
+    SELECT
+      torn_user_id,
+      username,
+      faction_id,
+      faction_position,
+      image
     FROM users
     WHERE torn_user_id = ?
     `

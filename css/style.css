@@ -113,6 +113,7 @@ body::after {
   gap: 32px;
 
   z-index: 1;
+  pointer-events: none;
 }
 
 .nav-center a {
@@ -567,6 +568,9 @@ html {
 
 .member-card-container {
   position: relative;
+  display: flex;
+  align-items: center;
+  z-index: 5001;
 }
 
 .member-card-btn {
@@ -574,6 +578,42 @@ html {
   background: transparent;
   cursor: pointer;
   padding: 0;
+  position: relative;
+  z-index: 5002;
+}
+
+.member-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+
+  width: 260px;
+
+  background:
+    rgba(12, 12, 12, 0.96);
+
+  border:
+    1px solid rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  border-radius: 16px;
+
+  padding: 18px;
+
+  z-index: 99999;
+
+  box-shadow:
+    0 10px 40px
+    rgba(0,0,0,.45);
+
+  backdrop-filter:
+    blur(14px);
+
+  overflow: visible;
 }
 
 .member-avatar {
@@ -582,22 +622,8 @@ html {
   border-radius: 50%;
   border: 2px solid #000;
   object-fit: cover;
-}
-
-.member-dropdown {
-  position: absolute;
-  top: 65px;
-  right: 0;
-  width: 260px;
-  background:
-    rgba(12, 12, 12, 0.96);
-  border:
-    1px solid rgba(255,255,255,.08);
-  border-radius: 16px;
-  padding: 18px;
-  z-index: 1000;
-  box-shadow:
-    0 10px 40px rgba(0,0,0,.45);
+  display: block;
+  pointer-events: none;
 }
 
 .member-header {
@@ -622,8 +648,7 @@ html {
 #memberRole,
 #memberFaction {
   font-size: 13px;
-  color:
-    var(--text-secondary);
+  color: var(--text-secondary);
 }
 
 .member-actions {
