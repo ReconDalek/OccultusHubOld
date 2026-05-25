@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Occultus Hub | Respect Tracker</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    .iframe-page {
+      height: calc(100vh - 80px);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .iframe-header {
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0,0,0,0.4);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .iframe-title {
+      font-family: Cinzel, serif;
+      font-size: 18px;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+
+    .iframe-subtitle {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    .iframe-wrapper {
+      flex: 1;
+      width: 100%;
+      position: relative;
+    }
+
+    .iframe-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .iframe-note {
+      font-size: 12px;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="background-overlay"></div>
+
+  <!-- NAVBAR (same as index for consistency) -->
+  <nav class="navbar">
+
+    <div class="nav-left">
+      <div class="logo-container">
+        <h1 class="logo-text">OCCULTUS</h1>
+        <span class="logo-subtitle">The Inner Sanctum</span>
+      </div>
+    </div>
+
+    <div class="nav-center"></div>
+
+    <div class="nav-right">
+      <a href="index.html" class="login-btn" style="text-decoration:none;">
+        Back Home
+      </a>
+    </div>
+
+  </nav>
+
+  <!-- PAGE -->
+  <section class="iframe-page">
+
+    <div class="iframe-header">
+      <div>
+        <div class="iframe-title">Respect Tracker</div>
+        <div class="iframe-subtitle">
+          Embedded operational monitoring tool
+        </div>
+      </div>
+
+      <div class="iframe-note">
+        External module (read-only embed)
+      </div>
+    </div>
+
+    <div class="iframe-wrapper">
+      <iframe
+        src="https://respect-tracker.pages.dev/"
+        loading="lazy"
+      ></iframe>
+    </div>
+
+  </section>
+
+</body>
+</html>
