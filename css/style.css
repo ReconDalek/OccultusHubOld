@@ -82,14 +82,11 @@ body::after {
   position: sticky;
 }
 
-.nav-left,
-.nav-right {
-  z-index: 2;
-}
-
 .nav-left {
   display: flex;
   align-items: center;
+  position: relative;
+  z-index: 20;
 }
 
 .nav-right {
@@ -98,6 +95,8 @@ body::after {
   justify-content: flex-end;
   gap: 12px;
   margin-left: auto; 
+  position: relative;
+  z-index: 20;
 }
 
 .nav-center {
@@ -112,8 +111,7 @@ body::after {
 
   gap: 32px;
 
-  z-index: 1;
-  pointer-events: none;
+  z-index: 10;
 }
 
 .nav-center a {

@@ -170,57 +170,29 @@ function updateNavigation() {
     ENSURE TOGGLE IS BOUND ONCE
   ------------------------------*/
 
-  if (
-    memberBtn &&
-    dropdown &&
-    !memberBtn.dataset.bound
-  ) {
+document.addEventListener("click", (e) => {
 
-    memberBtn.addEventListener(
-      "click",
-      (e) => {
+  const btn =
+    e.target.closest("#memberCardBtn");
 
-        e.preventDefault();
-        e.stopPropagation();
+  const dropdown =
+    document.getElementById("memberDropdown");
 
-        dropdown.classList.toggle(
-          "hidden"
-        );
-      },
-      true
-    );
+  if (!dropdown) return;
 
-    dropdown.addEventListener(
-      "click",
-      (e) => {
-        e.stopPropagation();
-      }
-    );
-
-    document.addEventListener(
-      "click",
-      (e) => {
-
-        const clickedInside =
-          memberBtn.contains(
-            e.target
-          ) ||
-          dropdown.contains(
-            e.target
-          );
-
-        if (!clickedInside) {
-          dropdown.classList.add(
-            "hidden"
-          );
-        }
-      },
-      true
-    );
-
-    memberBtn.dataset.bound =
-      "true";
+  if (btn) {
+    e.preventDefault();
+    dropdown.classList.toggle("hidden");
+    return;
   }
+
+  const container =
+    document.getElementById("memberCardContainer");
+
+  if (container && !container.contains(e.target)) {
+    dropdown.classList.add("hidden");
+  }
+});
 
   /* -----------------------------
      NOT LOGGED IN

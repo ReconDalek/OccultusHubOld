@@ -159,14 +159,13 @@ function clearSessionUI() {
     loginBtn.classList.remove("hidden");
   }
 
-  if (
-    typeof updateNavigation ===
-    "function"
-  ) {
+  // reset cached session properly
+  window.__occultusSessionCache = null;
+
+  // refresh nav safely
+  if (typeof updateNavigation === "function") {
     updateNavigation();
   }
-  window.__occultusSessionCache = enrichedUser;
-window.updateNavigation?.();
 }
 
 /* -----------------------------
@@ -178,6 +177,37 @@ async function authenticateUser(
   rememberMe,
   stayLoggedIn
 ) {
+
+  const isLocalhost =
+    window.location.hostname === "127.0.0.1" ||
+    window.location.hostname === "localhost";
+
+  if (isLocalhost && window.__devAuthAvailable) {
+
+    const devUser = {
+      userId: 99999999,
+      username: "Recon_Dev",
+      factionId: 33097,
+      factionPosition: "Leader",
+      isFactionMember: true,
+      isLeader: true,
+      image: null
+    };
+
+    localStorage.setItem("occultusSession", "dev-token");
+    localStorage.setItem("occultusUser", JSON.stringify(devUser));
+
+    applySession(devUser);
+
+    const modal =
+      document.getElementById("loginModal");
+
+    if (modal) {
+      modal.classList.add("hidden");
+    }
+
+    return;
+  }
 
   const status =
     document.getElementById(
@@ -258,77 +288,48 @@ async function checkSession() {
     window.location.hostname === "127.0.0.1" ||
     window.location.hostname === "localhost";
 
-  
+  const token = getSessionToken();
 
-  // LOCAL DEV BYPASS
-  if (
-    isLocalhost &&
-    DEV_AUTH_ENABLED
-  ) {
+  // NORMAL SESSION FLOW (real users or existing dev session)
+  if (token) {
 
-    const devUser = {
-      userId: 99999999,
-      username: "Recon_Dev",
-      factionId: 33097,
-      factionPosition: "Leader",
-      isFactionMember: true,
-      isLeader: true
-    };
+    try {
 
-    localStorage.setItem(
-      "occultusSession",
-      "dev-token"
-    );
+      const res = await fetch(
+        "/api/auth/session",
+        {
+          headers: {
+            Authorization: token
+          }
+        }
+      );
 
-    localStorage.setItem(
-      "occultusUser",
-      JSON.stringify(devUser)
-    );
+      const data = await res.json();
 
-    applySession(devUser);
+      if (!data.valid) {
+        clearSessionUI();
+        return;
+      }
 
-    console.warn(
-      "DEV AUTH ENABLED"
-    );
+      applySession(data.user);
+      triggerCompanyRefresh();
+
+    } catch (err) {
+
+      console.error("Session check failed:", err);
+      clearSessionUI();
+    }
 
     return;
   }
 
-  const token =
-    getSessionToken();
+  // IMPORTANT CHANGE:
+  // DO NOT auto-login on localhost anymore
+  // Only store a flag so login button can use dev mode
+  if (isLocalhost && DEV_AUTH_ENABLED) {
 
-  if (!token) return;
-
-  try {
-
-    const res = await fetch(
-      "/api/auth/session",
-      {
-        headers: {
-          Authorization: token
-        }
-      }
-    );
-
-    const data =
-      await res.json();
-
-    if (!data.valid) {
-      clearSessionUI();
-      return;
-    }
-
-    applySession(data.user);
-    triggerCompanyRefresh();
-
-  } catch (err) {
-
-    console.error(
-      "Session check failed:",
-      err
-    );
-
-    clearSessionUI();
+    window.__devAuthAvailable = true;
+    console.warn("DEV AUTH AVAILABLE (click login to use)");
   }
 }
 
@@ -338,32 +339,24 @@ async function checkSession() {
 
 async function logout() {
 
-  const token =
-    getSessionToken();
+  const token = getSessionToken();
 
   try {
-
-    await fetch(
-      "/api/auth/logout",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
-        body: JSON.stringify({
-          token
-        })
-      }
-    );
-
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ token })
+    });
   } catch (e) {
     console.error(e);
   }
 
   clearSessionUI();
 
-  location.reload();
+  // optional but clean hard reset
+  window.location.href = "/";
 }
 
 /* -----------------------------
