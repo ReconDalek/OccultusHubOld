@@ -99,11 +99,17 @@
       
       <div class="faction-card" style="margin-top:30px;">
         <h3>Command Controls</h3>
-        
-        <button class="primary-btn">Respect Tracker</button>
-        <button class="secondary-btn">Member Activity</button>
-        <button class="secondary-btn">War Status</button>
-        <button class="secondary-btn">Internal Notices</button>
+        <a href="respect.html" class="primary-btn">
+          Respect Tracker
+        </a>
+
+        <a href="#" class="secondary-btn">
+          Member Activity
+        </a>
+
+        <a href="#" class="secondary-btn">
+          Internal Notices
+        </a>
       </div>
 
     </div>
@@ -119,14 +125,15 @@
 
   </section>
 
-    <!-- LOGIN MODAL -->
+  <!-- LOGIN MODAL -->
   <div id="loginModal" class="modal hidden">
 
     <div class="modal-content">
 
-      <button id="closeModal" class="close-btn">  ×</button>
+      <button id="closeModal" class="close-btn">×</button>
 
       <h2>Member Authentication</h2>
+
       <p class="modal-description">
         Enter your Torn API key to access the inner sanctum.
       </p>
@@ -137,9 +144,31 @@
         placeholder="Enter Torn API Key"
       />
 
-      <button  id="submitLogin"  class="submit-btn">  Authenticate</button>
+      <!-- OPTIONS -->
+      <div style="margin: 0px 0px 18px; display: flex; flex-direction: column; gap: 10px; color: var(--text-secondary); font-size: 14px; width: 100%; align-items: flex-start; text-align: left;">
+
+        <!-- Changed align-items to flex-start and added a margin-top tweak to the input -->
+        <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer; white-space: nowrap; line-height: 1.2;">
+          <input type="checkbox" id="rememberMe" style="margin: 0; transform: translateY(2px);">
+          Remember Me
+        </label>
+
+        <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer; white-space: nowrap; line-height: 1.2;">
+          <input type="checkbox" id="stayLoggedIn" style="margin: 0; transform: translateY(2px);">
+          Stay Logged In
+        </label>
+
+      </div>
+
+      <button id="submitLogin" class="submit-btn">
+        Authenticate
+      </button>
 
       <div id="loginStatus"></div>
+
+      <p class="modal-footer">
+          By submitting your API key, you consent to it being saved securely and used for faction data collection.<br>Your key will never be shared or stored in plaintext and you can revoke access at any time.
+        </p>
 
     </div>
 
