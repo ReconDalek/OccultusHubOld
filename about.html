@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>Companies | Occultus Hub</title>
+  <title>About | Occultus Hub</title>
 
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/animations.css">
@@ -81,55 +81,51 @@
 
   </nav>
 
-  <!-- HERO -->
-  <section
-    class="hero-section"
-    style="min-height: 40vh;"
-  >
+  <!-- PAGE -->
+  <main class="container">
 
-    <div class="hero-content">
+    <h1 class="section-title">About Occultus</h1>
 
-      <h1 class="hero-title">
-        Occultus Companies
-      </h1>
 
-      <p class="hero-description">
-        Industry powers the collective.<br>
-        Every enterprise strengthens the order.
-      </p>
+    <div id="dashboard" style="display:none;">
+
+      <!--
+      <div class="faction-card">
+        <h3>Active Factions</h3>
+        <ul>
+          <li>Occultus (33097)</li>
+          <li>Occul2us (9728)</li>
+          <li>Occul3us (9171)</li>
+        </ul>
+      </div>
+      -->
+      
+      <div class="faction-card" style="margin-top:30px;">
+        <!--
+        <h3>Command Controls</h3>
+        <a href="respect.html" class="primary-btn">
+          Respect Tracker
+        </a>
+
+        <a href="#" class="secondary-btn">
+          Member Activity
+        </a>
+
+        <a href="#" class="secondary-btn">
+          Internal Notices
+        </a>
+        -->
+      </div>
 
     </div>
 
-  </section>
-
-  <!-- COMPANY GRID -->
-  <section class="faction-section">
-
-    <div
-      id="companyGrid"
-      class="faction-grid"
-    ></div>
-
-  </section>
-
-    <!-- CACHE STATUS -->
-  <section class="faction-section">
-
-    <div
-      id="companyLastUpdated"
-      class="quote-box"
-      style="margin-bottom: 10px;"
-    >
-      Loading company cache...
-    </div>
-
-  </section>
+  </main>
 
   <!-- QUOTE -->
   <section class="quote-section">
 
     <div class="quote-box">
-      <p id="rotatingQuote"></p>
+        <p id="rotatingQuote"></p>
     </div>
 
   </section>
@@ -155,7 +151,7 @@
 
       <!-- OPTIONS -->
       <div style="margin: 0px 0px 18px; display: flex; flex-direction: column; gap: 10px; color: var(--text-secondary); font-size: 14px; width: 100%; align-items: flex-start; text-align: left;">
-
+        
         <!-- Changed align-items to flex-start and added a margin-top tweak to the input -->
         <!--
         <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer; white-space: nowrap; line-height: 1.2;">
@@ -185,12 +181,14 @@
 
   </div>
 
+  <!-- SCRIPTS -->
   <script src="js/config.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/ui.js"></script>
+  <script src="js/access.js"></script>
   <script src="js/app.js"></script>
-  <script src="js/companies.js"></script>
+  <script src="js/leadership.js"></script>
 
 </body>
 </html>
