@@ -18,7 +18,8 @@ const OCCULTUS_CONFIG = {
     "Leader",
     "Co-leader",
     "Archon",
-    "High Council"
+    "High Council",
+    "Council"
   ],
 
   quotes: [

@@ -1,53 +1,189 @@
+/* =========================================
+   GLOBAL FLUID SCALING
+========================================= */
+
+html {
+  font-size: clamp(
+    14px,
+    0.45vw + 12px,
+    16px
+  );
+}
+
+img,
+iframe,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* =========================================
+   LARGE TABLET
+========================================= */
+
 @media (max-width: 1100px) {
 
   .faction-grid {
     grid-template-columns: 1fr;
   }
 
+  .company-detail-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
+
+/* =========================================
+   TABLET
+========================================= */
 
 @media (max-width: 900px) {
 
   .navbar {
-    flex-direction: column;
-    gap: 24px;
+    display: grid;
+
+    grid-template-columns:
+      1fr auto;
+
+    grid-template-areas:
+      "left right"
+      "center center";
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 20px;
+  }
+
+  .nav-left {
+    grid-area: left;
+    justify-self: start;
+  }
+
+  .nav-right {
+    grid-area: right;
+    justify-self: end;
+
+    margin-left: 0;
   }
 
   .nav-center {
+    grid-area: center;
+
+    position: static;
+    transform: none;
+
+    width: 100%;
+
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
+
+    gap: 18px;
+  }
+
+  .hero-section {
+    min-height: auto;
+    padding: 80px 20px;
   }
 
   .hero-title {
-    font-size: 52px;
+    font-size: clamp(
+      42px,
+      8vw,
+      58px
+    );
   }
 
   .hero-description {
     font-size: 18px;
+    line-height: 1.7;
   }
 
+  .section-title {
+    font-size: clamp(
+      34px,
+      5vw,
+      44px
+    );
+  }
+
+  .faction-section {
+    padding: 80px 24px;
+  }
+
+  .quote-box {
+    padding: 30px;
+    font-size: 18px;
+  }
+
+  .company-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .employee-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
 }
+
+/* =========================================
+   MOBILE
+========================================= */
 
 @media (max-width: 600px) {
 
   .navbar {
-    padding: 20px;
+    grid-template-columns:
+      1fr auto;
+
+    grid-template-areas:
+      "left right"
+      "center center";
+
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .logo-text {
+    font-size: 22px;
+    letter-spacing: 4px;
+  }
+
+  .logo-subtitle {
+    font-size: 11px;
+  }
+
+  .nav-center {
+    gap: 14px;
+  }
+
+  .nav-center a {
+    font-size: 14px;
   }
 
   .hero-title {
-    font-size: 40px;
+    font-size: clamp(
+      34px,
+      10vw,
+      44px
+    );
+  }
+
+  .hero-description {
+    font-size: 16px;
   }
 
   .hero-buttons {
     flex-direction: column;
+    width: 100%;
+    align-items: center;
   }
 
-  .section-title {
-    font-size: 34px;
+  .primary-btn,
+  .secondary-btn,
+  .login-btn {
+    width: 100%;
+    max-width: 320px;
   }
-
-  .faction-card {
-    padding: 28px;
-  }
-
 }
