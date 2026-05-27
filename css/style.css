@@ -618,7 +618,7 @@ html {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  border: 2px solid #000;
+  border: 3px solid #4f0051;
   object-fit: cover;
   display: block;
   pointer-events: none;
@@ -634,7 +634,7 @@ html {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  border: 2px solid #000;
+  border: 3px solid #4f0051;
   object-fit: cover;
 }
 

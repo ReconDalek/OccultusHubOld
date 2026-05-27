@@ -25,6 +25,10 @@ function buildNavLinks(session) {
     {
       label: "Home",
       href: "index.html"
+    },
+    {
+      label: "About",
+      href: "about.html"
     }
   ];
 
